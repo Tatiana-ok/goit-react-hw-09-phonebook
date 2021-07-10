@@ -23,19 +23,26 @@ const items = createReducer([], {
   },
 });
 
+const loading = createReducer(false, {
+  [actions.fetchContactRequest]: () => true,
+  [actions.fetchContactSuccess]: () => false,
+  [actions.fetchContactError]: () => false,
+});
+
 const filter = createReducer('', {
   [actions.changeFilter]: (_, { payload }) => payload,
   [actions.deleteContactSuccess]: (state, { payload }) => '',
 });
 
 const error = createReducer('', {
-  [actions.fetchContactsError]: (state, { payload }) => payload,
-  [actions.addContactError]: (state, { payload }) => payload,
-  [actions.deleteContactError]: (state, { payload }) => payload,
+  [actions.fetchContactsError]: (state, { payload }) => 'Ошибка доcтупа к данным. Авторизируйтесь!',
+  [actions.addContactError]: (state, { payload }) => 'Ошибка добавления контакта.',
+  [actions.deleteContactError]: (state, { payload }) => 'Ошибка удаления контакта.',
 })
 
 export default combineReducers({
   items,
   filter,
-  error
+  error,
+  loading
 });

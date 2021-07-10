@@ -1,0 +1,8 @@
+.UserMenu {
+  display: flex;
+  align-items: baseline;
+}
+.welcome {
+  margin-right: 15px;
+  margin-bottom: 0px;
+}

@@ -1,9 +1,14 @@
-.AppBar{
-    display: flex;
-    justify-content: space-between;
-};
+.header {
+  background-color: #cf98eb;
+}
 
-.line{
-    margin-top: 0; 
-    margin-bottom: 0;
+.AppBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.line {
+  margin-top: 0;
+  margin-bottom: 0;
 }

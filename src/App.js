@@ -1,13 +1,18 @@
 import './App.css';
-import s from './App.module.css';
-import { Component, Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import AppBar from './components/AppBar/AppBar';
 import PrivateRoute from './components/Routes/PrivateRoute';
 import PublicRoute from './components/Routes/PublicRoute';
 import authOperations from './redux/auth/auth-operations';
+import authSelectors from './redux/auth/auth-selectors';
+import phonebookSelectors from './redux/phonebook/phonebook-selectors';
 import styles from './App.module.css';
+import Load from "./components/Loader/Loader";
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 const PhonebookView = lazy(() => import('./views/PhonebookView'));
 const HomeView = lazy(() => import('./views/HomeView'));
@@ -15,15 +20,18 @@ const RegistrationView = lazy(() => import('./views/RegistrationView'));
 const LoginView = lazy(() => import('./views/LoginView'));
 const NotFoundView = lazy(() => import('./views/NotFoundView'));
 
-class App extends Component {
-    componentDidMount() {
-        this.props.onGetCurrentUser();
-    }
-    render() {
-        return(
+function App () {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(authOperations.getCurrentUser());
+    }, [dispatch]);
+        
+    // const isLoadingAuth= useSelector(authSelectors.getAuthLoading);
+    // const isLoadingContacts= useSelector(phonebookSelectors.getLoading);
+    return(
         <div className={styles.container}>
             <AppBar />
-            <Suspense fallback={<p>Загружаем...</p>}>
+                <Suspense fallback={<Loader type="ThreeDots" color="#00BFFF" height={80} width={80} timeout={5000}/>}>
                 <Switch>
                     <PublicRoute exact path="/" component={HomeView} />
                     <PublicRoute path="/register" restricted redirectTo="/" component={RegistrationView} />
@@ -33,8 +41,7 @@ class App extends Component {
                 </Switch>
             </Suspense>
         </div>
-        )
-    }
+    )
 };
 
 const mapDispatchToProps = dispatch => ({
